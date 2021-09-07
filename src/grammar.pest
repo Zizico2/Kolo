@@ -14,3 +14,7 @@ block_content = _{ !empty_block ~ (!block_end ~ !EOI ~ ( html | block )?)* }
 html = { (!delimiters ~ ANY)+ }
 
 component = _{ SOI ~ ( block | html )* ~ EOI }
+
+
+//PROGRAMMING
+expression = { ANY+ }
