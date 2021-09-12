@@ -4,17 +4,17 @@ block_end = _{ "{/}" }
 delimiters = _{"{#if}" | "{#const}" | "{#each}" | "{#html}" | block_end }
 empty_block = { WHITESPACE* ~ block_end }
 
-if_block = { "{#if}" ~ block_content ~ block_end }
-const_block = { "{#const}" ~ block_content ~ block_end }
+if_block = { "{#if " ~ expression ~ " #}" ~ block_content ~ block_end }
+//const_block = { "{#const}" ~ block_content ~ block_end }
 each_block = { "{#each}" ~ block_content ~ block_end }
-html_block = { "{#html}" ~ block_content ~ block_end }
+//html_block = { "{#html}" ~ block_content ~ block_end }
 
-block = _{if_block | const_block | each_block | html_block}
-block_content = _{ !empty_block ~ (!block_end ~ !EOI ~ ( html | block )?)* }
+block = _{ if_block | const_block | each_block | html_block }
+block_content = _{ !empty_block ~ (!block_end ~ ( html | block ))* }
 html = { (!delimiters ~ ANY)+ }
 
 component = _{ SOI ~ ( block | html )* ~ EOI }
 
 
 //PROGRAMMING
-expression = { ANY+ }
+expression = { (" #}" ~ ANY)+ }
