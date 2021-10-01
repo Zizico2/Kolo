@@ -5,7 +5,10 @@ block_end = _{ "{/" ~ WHITESPACE* ~ "}" }
 empty_block = { WHITESPACE* ~ block_end }
 
 if_start = ${"{#if" ~ WHITESPACE+ ~ expression ~ WHITESPACE+ ~ "#}"}
-each_start = ${"{#each" ~ WHITESPACE+ ~ test_expression ~ WHITESPACE+ ~ "in" ~ WHITESPACE+ ~ expression ~ WHITESPACE+ ~ "#}"}
+
+// EACH
+each_element_ident = { (!(WHITESPACE+ ~ "in") ~ ANY)+ }
+each_start = ${"{#each" ~ WHITESPACE+ ~ each_element_ident ~ WHITESPACE+ ~ "in" ~ WHITESPACE+ ~ expression ~ WHITESPACE+ ~ "#}"}
 
 if_block = { if_start ~ block_content ~ block_end }
 //const_block = { "{#const}" ~ block_content ~ block_end }
@@ -22,4 +25,3 @@ component = _{ SOI ~ ( block | html )* ~ EOI }
 
 //PROGRAMMING
 expression = { (!(WHITESPACE+ ~ "#}") ~ ANY)+ }
-test_expression = { (!(WHITESPACE+ ~ "in") ~ ANY)+ }
