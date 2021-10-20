@@ -1,0 +1,26 @@
+<style scoped>
+  .div {
+    color: red;
+  }
+</style>
+<script build>
+  let a = 3;
+</script>
+
+<style>
+  html {
+    margin: 0;
+  }
+</style>
+
+<div>I am div</div>
+
+<kolo-list for="elem" in="some_iter">
+  <div>I am repeated</div>
+</kolo-list>
+
+<kolo-if condition="a == clicked">
+  <div>I am conditional</div>
+</kolo-if>
+
+<slot name="content"></slot>
