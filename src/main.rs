@@ -1,13 +1,9 @@
-use html5ever::tendril::StrTendril;
-use html5ever::tree_builder::{ElementFlags, NodeOrText, QuirksMode, TreeSink};
-use html5ever::{self, /*Attribute,*/ /*ExpandedName,*/ QualName};
-use std::borrow::Cow;
-use std::cell::RefCell;
-
 mod attributes;
+mod sink;
+mod tree;
 
-use crate::attributes::{Attribute, Attributes, ExpandedName};
-
+fn main() {}
+/*
 /// Node data specific to the node type.
 #[derive(Debug, PartialEq, Clone)]
 pub enum NodeData {
@@ -372,3 +368,4 @@ impl TreeSink for Sink {
     }
 }
 fn main() {}
+ */

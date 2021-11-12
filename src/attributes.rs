@@ -1,4 +1,4 @@
-use html5ever::{LocalName, Namespace, Prefix};
+use html5ever::{namespace_url, ns, LocalName, Namespace, Prefix};
 use std::collections::btree_map::{BTreeMap, Entry};
 
 /// Convenience wrapper around a btreemap that adds method for attributes in the null namespace.
