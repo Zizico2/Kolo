@@ -130,6 +130,45 @@ impl NodeFactory {
         // if a Node has been removed there can still be NodeRefs to it in the wild
         self.nodes.get_mut(&node_ref).unwrap()
     }
+    pub fn append_before_sibling(&mut self, sibling_ref: NodeRef, new_node_ref: NodeRef) {
+        todo!()
+    }
+    pub fn remove_from_parent(&mut self, node_ref: NodeRef) {
+        todo!()
+    }
+    fn reparent_children(&mut self, old_parent_ref: NodeRef, new_parent_ref: NodeRef) {
+        //TODO: needs revision
+        let old_parent = self.get_node(old_parent_ref);
+        let first_child_ref = old_parent.first_child_ref;
+        let last_child_ref = old_parent.last_child_ref;
+
+        let new_parent = self.get_node_mut(new_parent_ref);
+        new_parent.first_child_ref = first_child_ref;
+        new_parent.last_child_ref = last_child_ref;
+
+        let old_parent = self.get_node_mut(old_parent_ref);
+        old_parent.first_child_ref = None;
+        old_parent.last_child_ref = None;
+
+        match (first_child_ref, last_child_ref) {
+            (None, None) => {}
+            (Some(first_child_ref), _) => {
+                let first_child = self.get_node_mut(first_child_ref);
+                first_child.parent_ref = Some(new_parent_ref);
+            }
+            _ => unreachable!(), // should never happen,
+        }
+    }
+    pub fn append_after_sibling(&mut self, sibling_ref: NodeRef, new_node_ref: NodeRef) {
+        unimplemented!()
+        // this isn't necessary for my use case but it would make this struct more general purpose.
+        // If I ever want to publish it is a crate this would be a worthy addition. This method's implementation
+        // shouldn't change the time complexity of any other method and it should be constant itself.
+        // it will increase memory usage though, since the last child of any node will have to know its parent
+        // (currently, only the first child needs to)
+        // it could, maybe, be enabled as a cargo feature. maybe more methods could use this treatment
+    }
+
     /*
     pub fn get_children(&self, node: &NodeRef) -> &Option<Vec<NodeRef>> {
         let node = self.get_node(node);

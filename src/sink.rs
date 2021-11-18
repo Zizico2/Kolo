@@ -72,7 +72,12 @@ impl TreeSink for Sink {
         prev_element: &Self::Handle,
         child: NodeOrText<Self::Handle>,
     ) {
-        todo!()
+        // orphan_nodes.contains could be abstracted as a method
+        if self.orphan_nodes.contains(element) {
+            self.append(prev_element, child)
+        } else {
+            self.append_before_sibling(element, child);
+        }
     }
 
     fn append_doctype_to_document(
