@@ -33,21 +33,20 @@ pub enum NodeData {
 }
 
 #[derive(Debug, PartialEq)]
-pub struct NodeFactory {
+pub struct NodeTree {
+    root: NodeRef,
     current_ref: NodeRef,
     nodes: HashMap<NodeRef, Node>,
-    orphan_nodes: HashSet<NodeRef>,
 }
 
-impl NodeFactory {
-    pub fn new() -> Self {
+impl NodeTree {
+    pub fn new(root: NodeRef) -> Self {
         let current_ref = NodeRef(0);
         let nodes = HashMap::new();
-        let orphan_nodes = HashSet::new();
-        NodeFactory {
+        NodeTree {
+            root,
             current_ref,
             nodes,
-            orphan_nodes,
         }
     }
 
@@ -110,7 +109,6 @@ impl NodeFactory {
         let node_ref = self.current_ref;
 
         self.nodes.insert(node_ref, node);
-        self.orphan_nodes.insert(node_ref);
 
         self.current_ref = NodeRef(node_ref.0 + 1);
 
@@ -190,7 +188,7 @@ impl NodeFactory {
 #[derive(Debug, PartialEq, Clone, Copy, Eq, Hash, PartialOrd, Ord)]
 pub struct NodeRef(u64);
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct Node {
     //TODO: figure out parent.
     //TODO: maybe Node should have no exposed methods and everything should be routed through NodeFactory (NodeTree renaming?)

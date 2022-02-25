@@ -11,14 +11,13 @@ use crate::tree::*;
 /// Receives new tree nodes during parsing.
 pub struct Sink {
     orphan_nodes: HashSet<NodeRef>,
-    node_factory: NodeFactory,
-    root_node: NodeRef,
+    node_tree: NodeTree,
     on_parse_error: Option<Box<dyn FnMut(Cow<'static, str>)>>,
 }
 
 impl TreeSink for Sink {
     type Handle = NodeRef;
-    type Output = Node;
+    type Output = NodeTree;
 
     fn finish(self) -> Self::Output {
         todo!()
@@ -42,7 +41,7 @@ impl TreeSink for Sink {
         attrs: Vec<Attribute>,
         _flags: ElementFlags,
     ) -> Self::Handle {
-        let node = self.node_factory.new_node(NodeData::Element(ElementData {
+        let node = self.node_tree.new_node(NodeData::Element(ElementData {
             name,
             attrs,
             //template_contents: None,
@@ -61,7 +60,7 @@ impl TreeSink for Sink {
 
     fn append(&mut self, parent: &Self::Handle, child: NodeOrText<Self::Handle>) {
         match child {
-            NodeOrText::AppendNode(handle) => self.node_factory.append(*parent, handle),
+            NodeOrText::AppendNode(handle) => self.node_tree.append(*parent, handle),
             NodeOrText::AppendText(_) => todo!(),
         }
     }
